@@ -1,0 +1,5 @@
+#!/bin/bash
+pid=$(cat /var/run/keepalived.pid 2>/dev/null)
+[[ $? -eq 0 ]] || { printf 'no keepalived running\n' >&2; exit 0; }
+kill -USR1 $pid
+grep -E 'VRRP Instance|State' /tmp/keepalived.data
