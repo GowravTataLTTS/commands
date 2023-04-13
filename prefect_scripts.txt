@@ -1,0 +1,4 @@
+prefect deployment build demon_checker.py
+prefect deployment apply trigger-deployment.yaml
+prefect deployment run trigger/prefect_checker
+prefect agent start -q test
