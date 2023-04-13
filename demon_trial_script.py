@@ -37,6 +37,8 @@ def trigger():
     time.sleep(5)
     return 
 
+if __name__=='__main__':
+    trigger()
 
             
 

@@ -1,4 +1,4 @@
-prefect deployment build demon_checker.py
+prefect deployment build demon_checker.py:trigger -n prefect_checker -q test interval 60
 prefect deployment apply trigger-deployment.yaml
 prefect deployment run trigger/prefect_checker
 prefect agent start -q test
