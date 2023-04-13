@@ -10,8 +10,6 @@ import subprocess
 from subprocess import PIPE, Popen
 from prefect import task, flow
 
-os.chdir('/home/gowrav')
-
 
 @task
 def check_status():  
