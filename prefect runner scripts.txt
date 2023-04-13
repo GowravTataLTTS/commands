@@ -1,0 +1,11 @@
+import subprocess
+
+
+def bash(command: str):
+    subprocess.run(command, shell=True)
+
+
+bash('prefect deployment build airbyte_handle.py:sync_data_mongodb -n sync-mongodb -q test --interval 300')
+bash('prefect deployment apply sync_data_mongodb-deployment.yaml')
+bash('prefect deployment run sync-data-mongodb/sync-mongodb')
+bash('prefect agent start -q test')
