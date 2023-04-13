@@ -25,14 +25,23 @@ def check_status():
     return state
 
 
+
+@task
+def first_task():
+    print("second world")
+    time.sleep(5)
+    return
+
+
 @flow
 def trigger():
     status = check_status()
     if status == "MASTER STATE":
-        print('entered into master state block')
+        print('hello world')
         time.sleep(10)
+        first_task()
         return 
-    print('entered into fault state block')
+    print('end of road')
     time.sleep(5)
     return 
 
