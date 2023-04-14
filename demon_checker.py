@@ -12,6 +12,9 @@ from prefect import task, flow
 import subprocess
 import schedule
 from multiprocessing import Process
+from datetime import datetime
+
+
 
 def keepalived_status():  
     state = 'FAULT STATE'
@@ -35,6 +38,8 @@ def prefect_checker():
     status = keepalived_status()
     if status == "MASTER STATE":
         trigger()
+    else:
+        print(datetime.now().strftime("%H:%M:%S"), "BACKUP")
     
 
 def run_per_time():
