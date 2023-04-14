@@ -10,32 +10,46 @@ import subprocess
 from subprocess import PIPE, Popen
 from prefect import task, flow
 import subprocess
+import schedule
+from multiprocessing import Process
 
-@task
-def check_status():  
-    state = 'BACKUP'
+def keepalived_status():  
+    state = 'FAULT STATE'
     terminal  =  Popen(['systemctl','status','keepalived.service'], 
                                   stdout=PIPE,
                                   stderr=PIPE)
     stdout,stderr=terminal.communicate()
-    decoded_stdout=  stdout.decode().lower()
-    master= ['master state' in decoded_stdout,
-            'fault state' not in decoded_stdout,
-             'higher priority' not in decoded_stdout]
+    decoded_stdout = stdout.decode()
+    decoded_stderr = stderr.decode()
     if stdout.decode().lower().split()[-2]=='master':
-    #if all(master):
-        state='MASTER'
+        state='MASTER STATE'
     return state
 
-
-
 @flow
-def trigger():
-    status = check_status()
+def trigger():    
+    print('hello world')
+    time.sleep(1)
+
+
+def prefect_checker(): 
+    status = keepalived_status()
     if status == "MASTER STATE":
-        print('hello world')
-        time.sleep(10)
-        return 
-    print('end of road')
-    time.sleep(5)
-    return 
+        trigger()
+    
+
+def run_per_time():
+    schedule.every(10).seconds.do(prefect_checker)
+    while True:
+        schedule.run_pending()
+
+
+
+
+def run_job():
+    p=Process(target=run_per_time)
+    p.start()
+    p.join()
+    
+    
+if __name__=='__main__':
+    run_job()
