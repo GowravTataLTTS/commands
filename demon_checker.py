@@ -6,10 +6,8 @@ Created on Thu Apr 13 14:17:39 2023
 @author: gowrav
 """
 import time
-import subprocess
 from subprocess import PIPE, Popen
-from prefect import task, flow
-import subprocess
+from prefect import flow
 import schedule
 from multiprocessing import Process
 from datetime import datetime
@@ -22,8 +20,6 @@ def keepalived_status():
                                   stdout=PIPE,
                                   stderr=PIPE)
     stdout,stderr=terminal.communicate()
-    decoded_stdout = stdout.decode()
-    decoded_stderr = stderr.decode()
     if stdout.decode().lower().split()[-2]=='master':
         state='MASTER STATE'
     return state
@@ -32,6 +28,7 @@ def keepalived_status():
 def trigger():    
     print('hello world')
     time.sleep(1)
+    return
 
 
 def prefect_checker(): 
