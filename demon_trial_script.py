@@ -13,33 +13,33 @@ from prefect import task, flow
 
 @task
 def check_status():  
-    state = 'FAULT STATE'
+    state = 'BACKUP'
     terminal  =  Popen(['systemctl','status','keepalived.service'], 
                                   stdout=PIPE,
                                   stderr=PIPE)
     stdout,stderr=terminal.communicate()
-    decoded_stdout = stdout.decode()
-    decoded_stderr = stderr.decode()
-    if 'MASTER STATE' in decoded_stdout:
-        state='MASTER STATE'
+    decoded_stdout = stdout.decode().lower()
+    master = ['master state' in decoded_stdout,
+              'fault state' not in decoded_stdout,
+              'higher priority' not in decoded_stdout]
+    if stdout.decode().lower().split()[-2]=='master':
+    #if all(master):
+        state='MASTER'
     return state
-
 
 
 @flow
 def trigger():
     status = check_status()
-    if status == "MASTER STATE":
+    if status == "MASTER":
         print('hello world')
         time.sleep(10)
         return 
-    print('end of road')
-    time.sleep(5)
+    print('fault block')
     return 
 
-if __name__=='__main__':
-    trigger()
 
-            
+if __name__=='__main__':
+	trigger()            
 
 
