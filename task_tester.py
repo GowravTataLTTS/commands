@@ -5,10 +5,23 @@ Created on Mon Apr 17 18:55:22 2023
 
 @author: gowrav
 """
+import random
+first_name = ['Ayan', "Brad", "Chetan", "David","Eswar"]
+last_name = ["Reddy","Smith","Naidu","Abbas","Jenkovich"]
 
 
 
-names = [{'name': 'Isaiah Morgan', 'age': 27, 'country': 'USA'}, {'name': 'Anand Morgan', 'age': 54, 'country': 'IND'}, {'name': 'Anand Naidu', 'age': 25, 'country': 'AUS'}, {'name': 'James Anderson', 'age': 19, 'country': 'AUS'}, {'name': 'Andrew Naidu', 'age': 35, 'country': 'AUS'}]
+names = []
+for i in range(5):
+    country = ['IND','USA','UK', 'AUS']
+    name =random.choice(first_name) + ' ' + random.choice(last_name)
+    country = random.choice(country)
+    age = random.choice(list(range(18,61)))
+
+    new_names = {'name':name,
+                 'age':age,
+                 'country':country}
+    names.append(new_names)
 
 def transformation_one(data):
     country_map = {"USA":"United States","IND":"India",
