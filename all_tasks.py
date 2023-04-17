@@ -16,7 +16,7 @@ from multiprocessing import Process
 from datetime import datetime
 sql = SQL()
 
-@task
+#@task
 def keepalived_status():  
     state = 'FAULT STATE'
     terminal  =  Popen(['systemctl','status','keepalived.service'], 
@@ -27,12 +27,12 @@ def keepalived_status():
         state='MASTER STATE'
     return state
 
-@task
+#@task
 def retrive_data():
     with sql.transaction() as session:
         return session.execute('SELECT * FROM CUSTOMERS').all()
 
-@task
+#@task
 def transformation_one(data):
     country_map = {"USA":"United States","IND":"India",
                    "UK":"United Kingdom",
@@ -45,7 +45,7 @@ def transformation_one(data):
     print(data)
     return data
 
-@task
+#@task
 def transformation_two(data):
     for i in data:
         i['age']= str(i['age'])+''+'Middle Age' if  i['age']>40 else str(i['age'])+' '+'Young Age'
@@ -55,7 +55,7 @@ def transformation_two(data):
     print(data)
     return data
 
-@task
+#@task
 def transformation_three(data):
     country_map = {"United States":"American","India":"Indian",
                    "United Kingdom":"English",
@@ -68,7 +68,7 @@ def transformation_three(data):
     print(data)
     return data
 
-@task
+#@task
 def insert_data(data):
     with sql.transaction() as session:
         session.bulk_update_mappings(Customers, data)
