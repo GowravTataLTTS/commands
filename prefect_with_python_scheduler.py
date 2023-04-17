@@ -5,7 +5,7 @@ Created on Mon Apr 17 17:47:18 2023
 
 @author: gowrav
 """
-from pgsql_connector import SQL
+from database_connections import SQL
 from prefect import task, flow
 from all_tasks import keepalived_status,retrive_data,transformation_one, transformation_two,transformation_three,insert_data
 import schedule

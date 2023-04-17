@@ -8,7 +8,7 @@ Created on Mon Apr 17 19:45:04 2023
 
 from pgsql_connector import SQL
 import time
-from  pgsql_connector import Customers
+from  database_connections import Customers
 from prefect import task, flow
 from subprocess import PIPE, Popen
 import schedule
