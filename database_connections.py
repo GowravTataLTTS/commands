@@ -7,44 +7,48 @@ Created on Mon Apr 17 17:04:04 2023
 """
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
 
 from sqlalchemy import Column, MetaData, Text, Integer
 from sqlalchemy.ext.declarative import declarative_base
 
-metadata = Metadata()
+metadata = MetaData()
 
 hostname = "localhost"
 database_name = "customers"
 user = "postgres"
-password = None
+password = "postgres"
 
 
-class SQL:
-
-    def __init__(self, **kwargs):
-        self.engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:5432/{database_name}')
-        self.sessionfactory = sessionmaker(bind=self.engine)
-
-    def transaction(self):
-        session = scoped_session(self.sessionfactory)
-        try:
-            yield session
-            session.commit()
-        except Exception:
-            session.rollback()
-            raise
-        finally:
-            session.close()
+#class SQL:
+#    def __init__(self, **kwargs):
+#        self.engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:5432/{database_name}')
+#        self.sessionfactory = sessionmaker(bind=self.engine)
+#
+#    def transaction_one(self):
+#        engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:5432/{database_name}')
+#        sessionfactory = sessionmaker(bind=engine)
+#        session = sessionfactory()
+#        return session
+#
+#    def transaction(self):
+#        session = scoped_session(self.sessionfactory)
+#        try:
+#            yield session
+#            session.commit()
+#        except Exception:
+#            session.rollback()
+#            raise
+#        finally:
+#            session.close()
 
 
 Base = declarative_base(metadata=metadata)
 
 
 class Customers(Base):
-
     __tablename__ = 'customer_data'
-    name = Column(Text, nullable=False)
+    name = Column(Text, nullable=False, primary_key=True)
     age = Column(Integer, nullable=False)
     country = Column(Text, nullable=False)
 

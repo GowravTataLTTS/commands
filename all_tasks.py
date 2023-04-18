@@ -17,6 +17,13 @@ from datetime import datetime
 
 sql = SQL()
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import MetaData, select
+
+metadata = MetaData()
+columns = {"name": 0, "age": 1, "country": 2}
+
 
 # @task
 def keepalived_status():
@@ -30,25 +37,41 @@ def keepalived_status():
     return state
 
 
+def transaction():
+    hostname = "localhost"
+    database_name = "customers"
+    user = "postgres"
+    password = "nopassword"
+    engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:5432/{database_name}')
+    sessionfactory = sessionmaker(bind=engine)
+    session = sessionfactory()
+    return session
+
+
 # @task
 def retrive_data():
-    with sql.transaction() as session:
-        return session.execute('SELECT * FROM public.customer_data').all()
+    with transaction() as session:
+        return session.execute(select(Customers)).scalars().all()
 
 
 # @task
 def transformation_one(data):
     country_map = {"USA": "United States", "IND": "India",
                    "UK": "United Kingdom",
-                   "AUS": "Australia"}
+                   "AUS": "Australia", "US": "United States"}
+    new_data = []
     for i in data:
-        if i['country'] in country_map.keys():
-            i['country'] = country_map[i['country']]
-            i['name'] = '1' + ' ' + i['name'].lower()
-    time.sleep(5)
+        print(i.age)
+        #converted_list = list(i)
+        #if any(word for word in converted_list if word in country_map.keys()):
+        if i.country in country_map.keys():
+            i.country = country_map[i.country]
+            i.name = '1' + ' ' + i.name.lower()
+        all = (i.name, i.age, i.country)
+        new_data.append(all)
     print('first transformation is done')
-    print(data)
-    return data
+    print(new_data)
+    return new_data
 
 
 # @task
@@ -80,5 +103,7 @@ def transformation_three(data):
 
 # @task
 def insert_data(data):
-    with sql.transaction() as session:
+    with transaction() as session:
         session.bulk_update_mappings(Customers, data)
+        session.commit()
+        print("inserted data")
