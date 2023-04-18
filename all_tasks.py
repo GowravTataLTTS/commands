@@ -6,7 +6,7 @@ Created on Mon Apr 17 19:45:04 2023
 @author: gowrav
 """
 
-from pgsql_connector import SQL
+from database_connections import SQL
 import time
 from database_connections import Customers
 from prefect import task, flow
