@@ -33,7 +33,7 @@ def keepalived_status():
 # @task
 def retrive_data():
     with sql.transaction() as session:
-        return session.execute('SELECT * FROM CUSTOMERS').all()
+        return session.execute('SELECT * FROM public.customer_data').all()
 
 
 # @task

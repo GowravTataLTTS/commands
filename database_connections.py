@@ -15,8 +15,8 @@ from sqlalchemy.ext.declarative import declarative_base
 metadata = Metadata()
 
 hostname = "localhost"
-database_name = "testload"
-user = "gowrav"
+database_name = "customers"
+user = "postgres"
 password = None
 
 
@@ -43,7 +43,7 @@ Base = declarative_base(metadata=metadata)
 
 class Customers(Base):
 
-    __tablename__ = 'customers'
+    __tablename__ = 'customer_data'
     name = Column(Text, nullable=False)
     age = Column(Integer, nullable=False)
     country = Column(Text, nullable=False)
