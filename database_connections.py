@@ -21,14 +21,16 @@ Base = declarative_base(metadata=metadata)
 
 class Customers(Base):
     __tablename__ = 'customer_data'
-    name = Column(Text, nullable=False, primary_key=True)
+    number = Column(Integer, nullable=False, primary_key=True)
+    name = Column(Text, nullable=False)
     age = Column(Integer, nullable=False)
     country = Column(Text, nullable=False)
 
-    def __init__(self, name, age, country):
+    def __init__(self, number, name, age, country):
+        self.number = number
         self.name = name
         self.age = age
         self.country = country
 
     def __repr__(self):
-        return f"{self.name},{self.age},{self.country}"
+        return f"{self.number},{self.name},{self.age},{self.country}"

@@ -6,7 +6,7 @@ Created on Mon Apr 17 19:45:04 2023
 @author: gowrav
 """
 
-#from database_connections import SQL
+# from database_connections import SQL
 import time
 from database_connections import Customers
 from prefect import task, flow
@@ -14,8 +14,9 @@ from subprocess import PIPE, Popen
 import schedule
 from multiprocessing import Process
 from datetime import datetime
+from sqlalchemy import update
 
-#sql = SQL()
+# sql = SQL()
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -61,14 +62,11 @@ def transformation_one(data):
                    "AUS": "Australia", "US": "United States"}
     new_data = []
     for i in data:
-        print(i.age)
         if i.country in country_map.keys():
             i.country = country_map[i.country]
             i.name = '1' + ' ' + i.name.lower()
-        all = (i.name, i.age, i.country)
+        all = {'name': i.name, 'age': i.age, 'country': i.country, 'number':i.number}
         new_data.append(all)
-    print('first transformation is done')
-    print(new_data)
     return new_data
 
 
@@ -104,9 +102,17 @@ def transformation_three(data):
 
 
 # @task
+#ef insert_data(data):
+#   for row in data:
+#       with transaction() as session:
+#           update(Customers, row)
+#           se
+#           #session.execute(f'UPDATE public.customer_data (name, age, country) VALUES {row}')
+#           session.commit()
+#           print("inserted data", row)
+
+
 def insert_data(data):
-    for row in data:
-        with transaction() as session:
-            session.execute(f'INSERT INTO public.customer_data (name, age, country) VALUES {row}')
-            session.commit()
-            print("inserted data", row)
+    with transaction() as session:
+        session.bulk_update_mappings(Customers,data)
+        session.commit()
