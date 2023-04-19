@@ -6,7 +6,7 @@ Created on Mon Apr 17 19:45:04 2023
 @author: gowrav
 """
 
-from database_connections import SQL
+#from database_connections import SQL
 import time
 from database_connections import Customers
 from prefect import task, flow
@@ -15,7 +15,7 @@ import schedule
 from multiprocessing import Process
 from datetime import datetime
 
-sql = SQL()
+#sql = SQL()
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -62,8 +62,6 @@ def transformation_one(data):
     new_data = []
     for i in data:
         print(i.age)
-        #converted_list = list(i)
-        #if any(word for word in converted_list if word in country_map.keys()):
         if i.country in country_map.keys():
             i.country = country_map[i.country]
             i.name = '1' + ' ' + i.name.lower()
@@ -76,14 +74,14 @@ def transformation_one(data):
 
 # @task
 def transformation_two(data):
+    new_data = []
     for i in data:
-        if isinstance(i['age'], int):
-            i['age'] = str(i['age']) + '' + 'Middle Age' if i['age'] > 40 else str(i['age']) + ' ' + 'Young Age'
-            i['name'] = i['name'].replace('1', '2')
-    time.sleep(5)
-    print('second transformation is done')
-    print(data)
-    return data
+        if isinstance(i.age, int):
+            i.age = str(i.age) + '' + 'Middle Age' if i.age > 40 else str(i.age) + ' ' + 'Young Age'
+            i.name = i.name.replace('1', '2')
+        all = (i.name, i.age, i.country)
+        new_data.append(all)
+    return new_data
 
 
 # @task
@@ -91,14 +89,18 @@ def transformation_three(data):
     country_map = {"United States": "American", "India": "Indian",
                    "United Kingdom": "English",
                    "Australia": "Aussie"}
+    new_data = []
     for i in data:
-        if i['country'] in country_map.keys():
-            i['country'] = country_map[i['country']]
-            i['name'] = i['name'].replace('2', '3')
+        if i.country in country_map.keys():
+            i.country = country_map[i.country]
+            i.name = i.name.replace('2', '3')
+        all = (i.name, i.age, i.country)
+        new_data.append(all)
+
     time.sleep(5)
     print('third transformation is done')
-    print(data)
-    return data
+    print(new_data)
+    return new_data
 
 
 # @task

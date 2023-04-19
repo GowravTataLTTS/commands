@@ -5,7 +5,7 @@ Created on Mon Apr 17 17:47:18 2023
 
 @author: gowrav
 """
-from database_connections import SQL
+#from database_connections import SQL
 from prefect import task, flow
 from all_tasks import keepalived_status, retrive_data, transformation_one, transformation_two, transformation_three, \
     insert_data
@@ -13,7 +13,7 @@ import schedule
 from multiprocessing import Process
 from datetime import datetime
 
-sql = SQL()
+#sql = SQL()
 
 
 # @flow
