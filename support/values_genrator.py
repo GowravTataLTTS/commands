@@ -11,8 +11,12 @@ for i in range(5):
     values = (random.choice(first_name) + " " + random.choice(last_name),
               random.choice(list(range(18, 61))),
               random.choice(country),
-              random.choice(number))
+              random.choice(number),
+              "Pending")
+
     names.append(values)
 
-print(f'INSERT INTO public.customer_data  (name, age, country,number) VALUES {names}')
-# print(names)
+new = f'INSERT INTO public.customer_data  (name, age, country,number,status) VALUES {names};'
+news = new.replace('[', '')
+news = news.replace(']', '')
+print(news)

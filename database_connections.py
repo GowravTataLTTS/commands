@@ -25,12 +25,14 @@ class Customers(Base):
     name = Column(Text, nullable=False)
     age = Column(Integer, nullable=False)
     country = Column(Text, nullable=False)
+    status = Column(Text, nullable=False)
 
-    def __init__(self, number, name, age, country):
+    def __init__(self, number, name, age, country,status):
         self.number = number
         self.name = name
         self.age = age
         self.country = country
+        self.status = status
 
     def __repr__(self):
-        return f"{self.number},{self.name},{self.age},{self.country}"
+        return f"{self.number},{self.name},{self.age},{self.country},{self.status}"

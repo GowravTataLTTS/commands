@@ -65,7 +65,7 @@ def transformation_one(data):
         if i.country in country_map.keys():
             i.country = country_map[i.country]
             i.name = '1' + ' ' + i.name.lower()
-        all = {'name': i.name, 'age': i.age, 'country': i.country, 'number': i.number}
+        all = {'name': i.name, 'age': i.age, 'country': i.country, 'number': i.number,'status':i.status}
         new_data.append(all)
     return new_data
 
@@ -77,7 +77,7 @@ def transformation_two(data):
         if isinstance(i['age'], int):
             i['age'] = 60 if i['age'] > 40 else 18
             i['name'] = i['name'].replace('1', '2')
-        all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number']}
+        all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number'],'status':i['status']}
         new_data.append(all)
     return new_data
 
@@ -92,7 +92,8 @@ def transformation_three(data):
         if i['country'] in country_map.keys():
             i['country'] = country_map[i['country']]
             i['name'] = i['name'].replace('2', '3')
-        all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number']}
+            i['status']="Done"
+        all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number'],'status':i['status']}
         new_data.append(all)
     print('third transformation is done')
     print(new_data)
