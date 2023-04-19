@@ -26,6 +26,7 @@ def trigger():
     return
 
 
+
 def prefect_checker():
     status = keepalived_status()
     if status == "MASTER STATE":
