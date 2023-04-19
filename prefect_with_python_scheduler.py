@@ -20,9 +20,9 @@ from datetime import datetime
 def trigger():
     names = retrive_data()
     all_names = transformation_one(names)
-    # second_names = transformation_two(all_names)
-    # third_names = transformation_three(second_names)
-    insert_data(all_names)
+    second_names = transformation_two(all_names)
+    third_names = transformation_three(second_names)
+    insert_data(third_names)
     return
 
 

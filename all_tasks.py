@@ -57,15 +57,15 @@ def retrive_data():
 
 # @task
 def transformation_one(data):
-    country_map = {"USA": "United States", "IND": "India",
-                   "UK": "United Kingdom",
-                   "AUS": "Australia", "US": "United States"}
+    country_map = {"U": "United States", "I": "India",
+                   "E": "England",
+                   "A": "Australia", "G": "Germany","F":"France"}
     new_data = []
     for i in data:
         if i.country in country_map.keys():
             i.country = country_map[i.country]
             i.name = '1' + ' ' + i.name.lower()
-        all = {'name': i.name, 'age': i.age, 'country': i.country, 'number':i.number}
+        all = {'name': i.name, 'age': i.age, 'country': i.country, 'number': i.number}
         new_data.append(all)
     return new_data
 
@@ -74,10 +74,10 @@ def transformation_one(data):
 def transformation_two(data):
     new_data = []
     for i in data:
-        if isinstance(i.age, int):
-            i.age = str(i.age) + '' + 'Middle Age' if i.age > 40 else str(i.age) + ' ' + 'Young Age'
-            i.name = i.name.replace('1', '2')
-        all = (i.name, i.age, i.country)
+        if isinstance(i['age'], int):
+            i['age'] = 60 if i['age'] > 40 else 18
+            i['name'] = i['name'].replace('1', '2')
+        all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number']}
         new_data.append(all)
     return new_data
 
@@ -85,34 +85,24 @@ def transformation_two(data):
 # @task
 def transformation_three(data):
     country_map = {"United States": "American", "India": "Indian",
-                   "United Kingdom": "English",
-                   "Australia": "Aussie"}
+                   "England": "English",
+                   "Australia": "Aussie", "Germany": "German", "France": "French"}
     new_data = []
     for i in data:
-        if i.country in country_map.keys():
-            i.country = country_map[i.country]
-            i.name = i.name.replace('2', '3')
-        all = (i.name, i.age, i.country)
+        if i['country'] in country_map.keys():
+            i['country'] = country_map[i['country']]
+            i['name'] = i['name'].replace('2', '3')
+        all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number']}
         new_data.append(all)
-
-    time.sleep(5)
     print('third transformation is done')
     print(new_data)
     return new_data
 
 
-# @task
-#ef insert_data(data):
-#   for row in data:
-#       with transaction() as session:
-#           update(Customers, row)
-#           se
-#           #session.execute(f'UPDATE public.customer_data (name, age, country) VALUES {row}')
-#           session.commit()
-#           print("inserted data", row)
-
-
 def insert_data(data):
-    with transaction() as session:
-        session.bulk_update_mappings(Customers,data)
-        session.commit()
+    for row in data:
+        with transaction() as session:
+            session.execute(update(Customers).where(Customers.number == row['number']).values(row))
+            session.commit()
+            print('inserted row', row)
+            #time.sleep(10)
