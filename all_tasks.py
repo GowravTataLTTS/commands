@@ -105,7 +105,8 @@ def transformation_three(data):
 
 # @task
 def insert_data(data):
-    with transaction() as session:
-        session.bulk_update_mappings(Customers, data)
-        session.commit()
-        print("inserted data")
+    for row in data:
+        with transaction() as session:
+            session.execute(f'INSERT INTO public.customer_data (name, age, country) VALUES {row}')
+            session.commit()
+            print("inserted data", row)
