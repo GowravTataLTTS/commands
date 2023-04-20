@@ -6,7 +6,6 @@ Created on Mon Apr 17 19:45:04 2023
 @author: gowrav
 """
 
-# from database_connections import SQL
 import time
 from database_connections import Customers
 from prefect import task, flow
@@ -16,7 +15,7 @@ from multiprocessing import Process
 from datetime import datetime
 from sqlalchemy import update
 
-# sql = SQL()
+
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -26,7 +25,7 @@ metadata = MetaData()
 columns = {"name": 0, "age": 1, "country": 2}
 
 
-# @task
+@task
 def keepalived_status():
     state = 'FAULT STATE'
     terminal = Popen(['systemctl', 'status', 'keepalived.service'],
@@ -39,7 +38,7 @@ def keepalived_status():
 
 
 def transaction():
-    hostname = "10.88.50.152"
+    hostname = "localhost"
     database_name = "customers"
     user = "postgres"
     password = "password"
@@ -49,7 +48,7 @@ def transaction():
     return session
 
 
-# @task
+@task
 def retrive_data():
     print('entered')
     with transaction() as session:
@@ -57,7 +56,7 @@ def retrive_data():
         return session.execute(select(Customers)).scalars().all()
 
 
-# @task
+@task
 def transformation_one(data):
     print('entered first transformation')
     country_map = {"U": "United States", "I": "India",
@@ -73,7 +72,7 @@ def transformation_one(data):
     return new_data
 
 
-# @task
+@task
 def transformation_two(data):
     new_data = []
     for i in data:
@@ -85,7 +84,7 @@ def transformation_two(data):
     return new_data
 
 
-# @task
+@task
 def transformation_three(data):
     country_map = {"United States": "American", "India": "Indian",
                    "England": "English",
@@ -98,8 +97,6 @@ def transformation_three(data):
             i['status']="Done"
         all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number'],'status':i['status']}
         new_data.append(all)
-    print('third transformation is done')
-    print(new_data)
     return new_data
 
 

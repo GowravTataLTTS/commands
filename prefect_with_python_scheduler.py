@@ -5,7 +5,7 @@ Created on Mon Apr 17 17:47:18 2023
 
 @author: gowrav
 """
-#from database_connections import SQL
+
 from prefect import task, flow
 from all_tasks import keepalived_status, retrive_data, transformation_one, transformation_two, transformation_three, \
     insert_data
@@ -13,10 +13,9 @@ import schedule
 from multiprocessing import Process
 from datetime import datetime
 
-#sql = SQL()
 
 
-# @flow
+@flow
 def trigger():
     names = retrive_data()
     all_names = transformation_one(names)
@@ -28,12 +27,11 @@ def trigger():
 
 
 def prefect_checker():
-    trigger()
-    #status = keepalived_status()
-    #if status == "MASTER STATE":
-     #   trigger()
-    #else:
-     #   print(datetime.now().strftime("%H:%M:%S"), "BACKUP")
+    status = keepalived_status()
+    if status == "MASTER STATE":
+        trigger()
+    else:
+       print(datetime.now().strftime("%H:%M:%S"), "BACKUP")
 
 
 def run_per_time():
@@ -49,5 +47,4 @@ def run_job():
 
 
 if __name__ == '__main__':
-    prefect_checker()
-    #retrive_data()
+    run_job()
