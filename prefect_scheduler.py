@@ -21,28 +21,3 @@ def trigger():
     third_names = transformation_three(second_names)
     insert_data(third_names)
     return
-
-
-def prefect_checker():
-    # status = keepalived_status()
-    status = "MASTER STATE"
-    if status == "MASTER STATE":
-        trigger()
-    else:
-        print(datetime.now().strftime("%H:%M:%S"), "BACKUP")
-
-
-def run_per_time():
-    schedule.every(1).minute.do(prefect_checker)
-    while True:
-        schedule.run_pending()
-
-
-def run_job():
-    p = Process(target=run_per_time)
-    p.start()
-    p.join()
-
-
-if __name__ == '__main__':
-    run_job()
