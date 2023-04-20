@@ -39,12 +39,11 @@ def keepalived_status():
 
 
 def transaction():
-    hostname = "localhost"
+    hostname = "10.88.50.152"
     database_name = "customers"
     user = "postgres"
     password = "password"
-    print('making connection with database')
-    engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:5432/{database_name}')
+    engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:6432/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
     session = sessionfactory()
     return session
@@ -52,12 +51,15 @@ def transaction():
 
 # @task
 def retrive_data():
+    print('entered')
     with transaction() as session:
+        print('started fetching data')
         return session.execute(select(Customers)).scalars().all()
 
 
 # @task
 def transformation_one(data):
+    print('entered first transformation')
     country_map = {"U": "United States", "I": "India",
                    "E": "England",
                    "A": "Australia", "G": "Germany","F":"France"}
