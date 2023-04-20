@@ -5,7 +5,6 @@ Created on Mon Apr 17 17:47:18 2023
 
 @author: gowrav
 """
-#from database_connections import SQL
 from prefect import task, flow
 from all_tasks import keepalived_status, retrive_data, transformation_one, transformation_two, transformation_three, \
     insert_data
@@ -13,10 +12,8 @@ import schedule
 from multiprocessing import Process
 from datetime import datetime
 
-#sql = SQL()
 
-
-# @flow
+@flow
 def trigger():
     names = retrive_data()
     all_names = transformation_one(names)
@@ -24,7 +21,6 @@ def trigger():
     third_names = transformation_three(second_names)
     insert_data(third_names)
     return
-
 
 
 def prefect_checker():
@@ -48,4 +44,4 @@ def run_job():
 
 
 if __name__ == '__main__':
-    retrive_data()
+    run_job()

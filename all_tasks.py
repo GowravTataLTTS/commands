@@ -42,7 +42,7 @@ def transaction():
     hostname = "localhost"
     database_name = "customers"
     user = "postgres"
-    password = "nopassword"
+    password = "password"
     print('making connection with database')
     engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:5432/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
@@ -107,4 +107,4 @@ def insert_data(data):
             session.execute(update(Customers).where(Customers.number == row['number']).values(row))
             session.commit()
             print('inserted row', row)
-            #time.sleep(10)
+            time.sleep(10)
