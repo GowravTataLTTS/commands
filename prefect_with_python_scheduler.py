@@ -48,4 +48,4 @@ def run_job():
 
 
 if __name__ == '__main__':
-    prefect_checker()
+    retrive_data()

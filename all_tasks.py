@@ -43,6 +43,7 @@ def transaction():
     database_name = "customers"
     user = "postgres"
     password = "nopassword"
+    print('making connection with database')
     engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:5432/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
     session = sessionfactory()
