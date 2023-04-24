@@ -14,8 +14,7 @@ from multiprocessing import Process
 from datetime import datetime
 
 
-
-@flow
+#@flow
 def trigger():
     names = retrive_data()
     all_names = transformation_one(names)
@@ -25,13 +24,14 @@ def trigger():
     return
 
 
-
 def prefect_checker():
+    print(datetime.now().strftime("%H:%M:%S"), 'Entered Flow')
     status = keepalived_status()
+    print(datetime.now().strftime("%H:%M:%S"), f'Status of keepalived is {status}')
     if status == "MASTER STATE":
         trigger()
     else:
-       print(datetime.now().strftime("%H:%M:%S"), "BACKUP")
+        print(datetime.now().strftime("%H:%M:%S"), "BACKUP")
 
 
 def run_per_time():
@@ -41,6 +41,7 @@ def run_per_time():
 
 
 def run_job():
+    print(datetime.now().strftime("%H:%M:%S"), 'Entered Run Job')
     p = Process(target=run_per_time)
     p.start()
     p.join()
