@@ -25,14 +25,11 @@ columns = {"name": 0, "age": 1, "country": 2}
 
 #@task
 def keepalived_status():
-    state = 'FAULT STATE'
     terminal = Popen(['systemctl', 'status', 'keepalived.service'],
                      stdout=PIPE,
                      stderr=PIPE)
     stdout, stderr = terminal.communicate()
-    if stdout.decode().lower().split()[-2] == 'master':
-        state = 'MASTER STATE'
-    return state
+    return stdout.decode().upper().split()[-2]
 
 
 def transaction():
@@ -43,7 +40,6 @@ def transaction():
     engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:6432/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
     session = sessionfactory()
-    print(datetime.now().strftime("%H:%M:%S"), f'Established Connection with  {hostname} database')
     return session
 
 
