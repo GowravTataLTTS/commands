@@ -101,5 +101,6 @@ def insert_data(data):
             time.sleep(10)
             session.execute(update(Customers).where(Customers.number == row['number']).values(row))
             session.commit()
+            session.close()
             print(datetime.now().strftime("%H:%M:%S"), 'Updated Row - ', row)
 
