@@ -35,6 +35,7 @@ def prefect_checker():
 
 
 def run_per_time():
+    print(datetime.now().strftime("%H:%M:%S"), 'Scheduler Triggered')
     schedule.every(1).minute.do(prefect_checker)
     while True:
         schedule.run_pending()

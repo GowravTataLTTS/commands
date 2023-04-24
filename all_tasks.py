@@ -43,6 +43,7 @@ def transaction():
     engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:6432/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
     session = sessionfactory()
+    print(datetime.now().strftime("%H:%M:%S"), f'Established Connection with  {hostname} database')
     return session
 
 
