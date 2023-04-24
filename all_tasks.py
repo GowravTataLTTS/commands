@@ -36,10 +36,10 @@ def keepalived_status():
 
 
 def transaction():
-    hostname = "localhost"
+    hostname = "192.168.1.19"
     database_name = "customers"
     user = "postgres"
-    password = "password"
+    password = "mysecretpassword"
     engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:6432/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
     session = sessionfactory()
