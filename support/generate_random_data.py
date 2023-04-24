@@ -10,7 +10,6 @@ number = list(range(100000, 999999))
 names = []
 
 value = int(sys.argv[1])
-print('value is',value)
 for i in range(value):
     values = (random.choice(first_name) + " " + random.choice(last_name),
               random.choice(list(range(18, 61))),
