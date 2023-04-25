@@ -33,7 +33,7 @@ def keepalived_status():
 
 
 def transaction():
-    hostname = "192.168.1.19"
+    hostname = "172.20.10.11"
     database_name = "customers"
     user = "postgres"
     password = "mysecretpassword"
