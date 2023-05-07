@@ -7,7 +7,7 @@ Created on Mon Apr 17 19:45:04 2023
 """
 
 import time
-from database_connections import Customers
+from database_models import Customers, Subs
 from prefect import task, flow
 from subprocess import PIPE, Popen
 import schedule
@@ -23,7 +23,7 @@ metadata = MetaData()
 columns = {"name": 0, "age": 1, "country": 2}
 
 
-#@task
+# @task
 def keepalived_status():
     terminal = Popen(['systemctl', 'status', 'keepalived.service'],
                      stdout=PIPE,
@@ -43,64 +43,34 @@ def transaction():
     return session
 
 
-#@task
-def retrive_data():
+# @task
+def retrieve_completed_tasks():
     with transaction() as session:
-        return session.execute(select(Customers)).scalars().all()
+        subs_phone_id = session.query(Subs.phone).distinct()
+        return (
+            session.query(Customers.name, Customers.dob, Customers.country, Customers.phone, Customers.email)
+                .filter(~Customers.phone.in_(subs_phone_id))
+                .distinct()
+                .all()
+        )
 
 
-#@task
+# @task
 def transformation_one(data):
-    country_map = {"U": "United States", "I": "India",
-                   "E": "England",
-                   "A": "Australia", "G": "Germany", "F": "France"}
-    new_data = []
+    records = []
+    citizen = {'USA': 'american', 'Canada': 'canadian', 'Germany': 'german',
+               'Mexico': 'mexican', 'Russia': 'russian', 'France': 'french',
+               'Japan': 'japanese', 'China': 'chinese', 'Brazil': 'brazilian'}
     for i in data:
-        if i.country in country_map.keys():
-            i.country = country_map[i.country]
-            i.name = '1' + ' ' + i.name.lower()
-        all = {'name': i.name, 'age': i.age, 'country': i.country, 'number': i.number, 'status': i.status}
-        new_data.append(all)
-    return new_data
-
-
-#@task
-def transformation_two(data):
-    new_data = []
-    for i in data:
-        if isinstance(i['age'], int):
-            i['age'] = 60 if i['age'] > 40 else 18
-            i['name'] = i['name'].replace('1', '2')
-        all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number'],
-               'status': i['status']}
-        new_data.append(all)
-    return new_data
-
-
-#@task
-def transformation_three(data):
-    country_map = {"United States": "American", "India": "Indian",
-                   "England": "English",
-                   "Australia": "Aussie", "Germany": "German", "France": "French"}
-    new_data = []
-    for i in data:
-        if i['country'] in country_map.keys():
-            i['country'] = country_map[i['country']]
-            i['name'] = i['name'].replace('2', '3')
-            i['status'] = "Done"
-        all = {'name': i['name'], 'age': i['age'], 'country': i['country'], 'number': i['number'],
-               'status': i['status']}
-        new_data.append(all)
-    return new_data
+        name = i.name.lower()
+        email = i.email.upper()
+        country = citizen[i.country] if i.country in citizen else i.country
+        record = {'name': name, 'dob': i.dob, 'country': country, 'phone': i.phone, 'email': email}
+        records.append(record)
+    return records
 
 
 def insert_data(data):
-    for row in data:
-        with transaction() as session:
-            print(datetime.now().strftime("%H:%M:%S"), 'Updating Row - ', row['number'])
-            time.sleep(10)
-            session.execute(update(Customers).where(Customers.number == row['number']).values(row))
-            session.commit()
-            session.close()
-            print(datetime.now().strftime("%H:%M:%S"), 'Updated Row - ', row)
-
+    with transaction() as session:
+        session.bulk_insert_mappings(Subs, data)
+    return
