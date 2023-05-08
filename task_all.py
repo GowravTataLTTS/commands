@@ -14,13 +14,12 @@ import schedule
 from multiprocessing import Process
 from datetime import datetime
 from sqlalchemy import update
-
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import MetaData, select
 
 metadata = MetaData()
-columns = {"name": 0, "age": 1, "country": 2}
 
 
 # @task
@@ -33,8 +32,8 @@ def keepalived_status():
 
 
 def transaction():
-    hostname = "172.20.10.11"
-    database_name = "customers"
+    hostname = os.getenv('hostname')
+    database_name = "postgres"
     user = "postgres"
     password = "mysecretpassword"
     engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:6432/{database_name}')
