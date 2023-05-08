@@ -3,7 +3,7 @@ import random
 import string
 import datetime
 import names
-
+from random import choice
 
 # Function to generate dummy data
 def generate_dummy_data():
