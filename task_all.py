@@ -44,6 +44,7 @@ def transaction():
 
 # @task
 def retrieve_completed_tasks():
+    print(datetime.now().strftime("%H:%M:%S"), 'Started Retrieving Completed Tasks')
     with transaction() as session:
         subs_phone_id = session.query(Subs.phone).distinct()
         return (
@@ -56,6 +57,7 @@ def retrieve_completed_tasks():
 
 # @task
 def transformation(data):
+    print(datetime.now().strftime("%H:%M:%S"), 'Started Transformation')
     records = []
     citizen = {'USA': 'american', 'Canada': 'canadian', 'Germany': 'german',
                'Mexico': 'mexican', 'Russia': 'russian', 'France': 'french',
@@ -66,14 +68,17 @@ def transformation(data):
         country = citizen[i.country] if i.country in citizen else i.country
         record = {'name': name, 'country': country, 'phone': i.phone, 'email': email}
         records.append(record)
+    print(datetime.now().strftime("%H:%M:%S"), 'Completed Transformation')
     return records
 
 
 # @task
 def insert_data(data):
     with transaction() as session:
+        print(datetime.now().strftime("%H:%M:%S"), 'Started Inserting Data')
         session.bulk_insert_mappings(Subs, data)
         session.commit()
+        print(datetime.now().strftime("%H:%M:%S"), 'Ended Inserting Data')
     return
 
 
@@ -90,7 +95,9 @@ def retrieve_exchanges():
 def database_update(data):
     with transaction as session:
         session.bulk_update_mappings(Exchange, data)
+        print(datetime.now().strftime("%H:%M:%S"), 'Started Updating Database')
         session.commit()
+        print(datetime.now().strftime("%H:%M:%S"), 'Completed Updating Database')
     return
 
 
@@ -107,5 +114,7 @@ def retrieve_upcoming_orders():
 def insert_conflict_ticket_data(data):
     with transaction() as session:
         session.bulk_insert_mappings(Subs, data)
+        print(datetime.now().strftime("%H:%M:%S"), 'Started inserting Data in Conflict Tickets Table')
         session.commit()
+        print(datetime.now().strftime("%H:%M:%S"), 'Completed inserting Data in Conflict Tickets Table')
     return

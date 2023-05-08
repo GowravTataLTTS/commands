@@ -14,7 +14,8 @@ def generate_dummy_data():
     country = random.choice(countries)
 
     # Generate a random phone number (10 digits)
-    phone_number = ''.join(random.choices(string.digits, k=10))
+    #phone_number = ''.join(random.choices(string.digits, k=10))
+    phone_number = str(choice(list(range(1000000,99999999))))
 
     # Generate a random email address using the person's name and a random domain
     email = names.get_first_name().lower() + '.' + names.get_last_name().lower() + '@' + random.choice(
