@@ -7,8 +7,7 @@ Created on Mon Apr 17 17:47:18 2023
 """
 
 from prefect import task, flow
-from all_tasks import keepalived_status, retrive_data, transformation_one, transformation_two, transformation_three, \
-    insert_data
+from all_tasks import keepalived_status, retrieve_completed_tasks, transformation_one, insert_data
 import schedule
 from multiprocessing import Process
 from datetime import datetime
@@ -16,11 +15,9 @@ from datetime import datetime
 
 #@flow
 def trigger():
-    names = retrive_data()
+    names = retrieve_completed_tasks()
     all_names = transformation_one(names)
-    second_names = transformation_two(all_names)
-    third_names = transformation_three(second_names)
-    insert_data(third_names)
+    insert_data(all_names)
     return
 
 
@@ -50,4 +47,4 @@ def run_job():
 
 
 if __name__ == '__main__':
-    run_job()
+    trigger()
