@@ -7,7 +7,7 @@ Created on Mon Apr 17 19:45:04 2023
 """
 
 import time
-from database_models import Customers
+from models import Customers
 from prefect import task, flow
 from subprocess import PIPE, Popen
 import schedule

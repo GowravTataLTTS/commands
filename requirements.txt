@@ -4,3 +4,4 @@ GeoAlchemy2==0.13.1
 sqlalchemy==1.4.22
 psycopg2-binary==2.9.5
 schedule
+names

@@ -7,17 +7,26 @@ Created on Mon Apr 17 17:47:18 2023
 """
 
 from prefect import task, flow
-from all_tasks import keepalived_status, retrieve_completed_tasks, transformation_one, insert_data
+from task_all import *
 import schedule
 from multiprocessing import Process
 from datetime import datetime
 
 
-#@flow
+# @flow
 def trigger():
-    names = retrieve_completed_tasks()
-    all_names = transformation_one(names)
-    insert_data(all_names)
+    first_data = retrieve_completed_tasks()
+    first_transformation = transformation(first_data)
+    first_insert = insert_data(first_transformation)
+
+    second_data = retrieve_exchanges()
+    second_transformation = transformation(second_data)
+    second_update = database_update(second_transformation)
+
+    third_data = retrieve_upcoming_orders()
+    third_transformation = transformation(third_data)
+    third_insert = insert_conflict_ticket_data(third_transformation)
+
     return
 
 

@@ -6,7 +6,7 @@ Created on Mon Apr 17 17:47:18 2023
 @author: gowrav
 """
 from prefect import task, flow
-from all_tasks import keepalived_status, retrive_data, transformation_one, transformation_two, transformation_three, \
+from task_all import keepalived_status, retrive_data, transformation_one, transformation_two, transformation_three, \
     insert_data
 import schedule
 from multiprocessing import Process
