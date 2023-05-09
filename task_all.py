@@ -31,10 +31,11 @@ def keepalived_status():
 
 def transaction():
     hostname = os.getenv('hostname')
-    database_name = "poc_db"
-    user = "postgres"
-    password = "password"
-    engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:7432/{database_name}')
+    database_name = os.getenv('database_name')
+    user = os.getenv('user')
+    password = os.getenv('password')
+    port = os.getenv('port')
+    engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:{port}/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
     session = sessionfactory()
     return session

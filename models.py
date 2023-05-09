@@ -1,8 +1,9 @@
-"""
-Created on Mon Apr 17 17:04:04 2023
-
-@author: gowrav
-"""
+#!/bin/bash/python3
+#"""
+#Created on Mon Apr 17 17:04:04 2023
+#
+#@author: gowrav
+#"""
 
 from sqlalchemy import Column, MetaData, Text, Integer, Date
 from sqlalchemy.ext.declarative import declarative_base
