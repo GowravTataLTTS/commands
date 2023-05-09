@@ -33,10 +33,10 @@ def keepalived_status():
 
 def transaction():
     hostname = os.getenv('hostname')
-    database_name = "postgres"
+    database_name = "poc_db"
     user = "postgres"
     password = "password"
-    engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:6432/{database_name}')
+    engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:7432/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
     session = sessionfactory()
     return session
@@ -76,7 +76,9 @@ def transformation(data):
 def insert_data(data):
     with transaction() as session:
         print(datetime.now().strftime("%H:%M:%S"), 'Started Inserting Data')
-        session.bulk_insert_mappings(Subs, data)
+        for i in range(9):
+            session.bulk_insert_mappings(Subs, data)
+            print('Inserted ', i)
         session.commit()
         print(datetime.now().strftime("%H:%M:%S"), 'Ended Inserting Data')
     return
