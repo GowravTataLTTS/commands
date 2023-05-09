@@ -35,7 +35,7 @@ def transaction():
     hostname = os.getenv('hostname')
     database_name = "postgres"
     user = "postgres"
-    password = "mysecretpassword"
+    password = "password"
     engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{hostname}:6432/{database_name}')
     sessionfactory = sessionmaker(bind=engine)
     session = sessionfactory()

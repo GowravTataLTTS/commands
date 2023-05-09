@@ -35,7 +35,7 @@ csvwriter = csv.writer(csvfile)
 csvwriter.writerow(['name', 'country', 'phone', 'email'])
 
 # Generate 1 million dummy records and write to the file
-for i in range(1000):
+for i in range(100000):
     data = generate_dummy_data()
     csvwriter.writerow(data)
 
