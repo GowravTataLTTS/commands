@@ -21,7 +21,7 @@ class Customers(Base):
     country = Column(Text, nullable=False)
     phone = Column(Text)
     email = Column(Text)
-    id = Column(Integer, primary=True)
+    id = Column(Integer, primary_key=True)
 
     def __init__(self, name, country, phone, email , id):
         self.name = name
@@ -40,7 +40,7 @@ class Subs(Base):
     country = Column(Text, nullable=False)
     phone = Column(Text)
     email = Column(Text)
-    id = Column(Integer, primary=True)
+    id = Column(Integer, primary_key=True)
     
 
     def __init__(self, name,  country, phone, email , id):
@@ -61,7 +61,7 @@ class Exchange(Base):
     country = Column(Text, nullable=False)
     phone = Column(Text)
     email = Column(Text)
-    id = Column(Integer, primary=True)
+    id = Column(Integer, primary_key=True)
 
     def __init__(self, name, country, phone, email , id):
         self.name = name
@@ -80,7 +80,7 @@ class Conflict(Base):
     country = Column(Text, nullable=False)
     phone = Column(Text)
     email = Column(Text)
-    id = Column(Integer, primary=True)
+    id = Column(Integer, primary_key=True)
 
     def __init__(self, name,  country, phone, email , id):
         self.name = name
