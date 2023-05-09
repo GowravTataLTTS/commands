@@ -21,12 +21,14 @@ class Customers(Base):
     country = Column(Text, nullable=False)
     phone = Column(Text)
     email = Column(Text)
+    id = Column(Integer, primary=True)
 
-    def __init__(self, name, country, phone, email):
+    def __init__(self, name, country, phone, email , id):
         self.name = name
         self.country = country
         self.phone = phone
         self.email = email
+        self.id=id
 
     def __repr__(self):
         return f"{self.name},{self.country},{self.phone},{self.email}"
@@ -38,12 +40,16 @@ class Subs(Base):
     country = Column(Text, nullable=False)
     phone = Column(Text)
     email = Column(Text)
+    id = Column(Integer, primary=True)
+    
 
-    def __init__(self, name,  country, phone, email):
+    def __init__(self, name,  country, phone, email , id):
         self.name = name
         self.country = country
         self.phone = phone
         self.email = email
+        self.id=id
+        
 
     def __repr__(self):
         return f"{self.name},{self.country},{self.phone},{self.email}"
@@ -55,12 +61,14 @@ class Exchange(Base):
     country = Column(Text, nullable=False)
     phone = Column(Text)
     email = Column(Text)
+    id = Column(Integer, primary=True)
 
-    def __init__(self, name, country, phone, email):
+    def __init__(self, name, country, phone, email , id):
         self.name = name
         self.country = country
         self.phone = phone
         self.email = email
+        self.id=id
 
     def __repr__(self):
         return f"{self.name},{self.country},{self.phone},{self.email}"
@@ -72,12 +80,14 @@ class Conflict(Base):
     country = Column(Text, nullable=False)
     phone = Column(Text)
     email = Column(Text)
+    id = Column(Integer, primary=True)
 
-    def __init__(self, name,  country, phone, email):
+    def __init__(self, name,  country, phone, email , id):
         self.name = name
         self.country = country
         self.phone = phone
         self.email = email
+        self.id=id
 
     def __repr__(self):
         return f"{self.name},{self.country},{self.phone},{self.email}"
